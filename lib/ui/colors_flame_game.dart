@@ -8,7 +8,8 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class ColorsFlameGame extends FlameGame with TapCallbacks, HasCollisionDetection {
+class ColorsFlameGame extends FlameGame
+    with TapCallbacks, HasCollisionDetection {
   late PlayerComponent playerComponent;
   final List<Color> gameColors;
 
@@ -37,7 +38,7 @@ class ColorsFlameGame extends FlameGame with TapCallbacks, HasCollisionDetection
   @override
   void onMount() {
     initGameComponents();
-    debugMode = true;
+    // debugMode = true;
     super.onMount();
   }
 
@@ -79,5 +80,14 @@ class ColorsFlameGame extends FlameGame with TapCallbacks, HasCollisionDetection
     }
 
     initGameComponents();
+  }
+
+  bool get isGamePaused => paused;
+  void pauseGame() {
+    pauseEngine();
+  }
+
+  void resumeGame() {
+    resumeEngine();
   }
 }
