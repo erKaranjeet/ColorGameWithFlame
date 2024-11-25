@@ -43,16 +43,46 @@ class MyAppState extends State<MyApp> {
           if (!flameGame.isGamePaused)
             Positioned(
             left: 0,
-            top: 40,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  flameGame.pauseGame();
-                });
-              },
-              icon: const Icon(
-                Icons.pause_circle_outline_rounded,
-                size: 32.0,
+            child: SafeArea(
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    flameGame.pauseGame();
+                  });
+                },
+                icon: const Icon(
+                  Icons.pause_circle_outline_rounded,
+                  size: 32.0,
+                ),
+              ),
+            ),
+          ),
+          if (!flameGame.isGamePaused)
+            Positioned(
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: ValueListenableBuilder(
+                valueListenable: flameGame.currentScore,
+                builder: (context, value, child) {
+                  return Text(
+                    'Score: ${value.toString()}',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.nunito(
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black,
+                            blurRadius: 4.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -62,34 +92,37 @@ class MyAppState extends State<MyApp> {
                 sigmaX: 5,
                 sigmaY: 5,
               ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'PAUSED!',
-                      style: GoogleFonts.nunito(
-                        textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 48.0,
+              child: Container(
+                color: Colors.black45,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'PAUSED!',
+                        style: GoogleFonts.nunito(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 48.0,
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          flameGame.resumeGame();
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.play_circle_outline_rounded,
-                        size: 68.0,
-                        color: Colors.white,
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            flameGame.resumeGame();
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.play_circle_outline_rounded,
+                          size: 68.0,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

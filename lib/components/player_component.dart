@@ -1,10 +1,12 @@
 import 'package:color_game_with_flame/components/circle_arc_component.dart';
 import 'package:color_game_with_flame/components/color_switch_component.dart';
 import 'package:color_game_with_flame/components/ground_component.dart';
+import 'package:color_game_with_flame/components/star_component.dart';
 import 'package:color_game_with_flame/ui/colors_flame_game.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 class PlayerComponent extends PositionComponent with HasGameRef<ColorsFlameGame>, CollisionCallbacks {
@@ -12,7 +14,7 @@ class PlayerComponent extends PositionComponent with HasGameRef<ColorsFlameGame>
   PlayerComponent({
     required super.position,
     this.playerRadius = 12,
-  });
+  }) : super(priority: 20);
 
   final velocity = Vector2.zero();
   final gravity = 980.0;
@@ -78,9 +80,15 @@ class PlayerComponent extends PositionComponent with HasGameRef<ColorsFlameGame>
       other.removeFromParent();
       changeColorRandomly();
     } else if (other is CircleArcComponent) {
-      if (playerColor != other.color) {
-        gameRef.gameOver();
-      }
+      // if (playerColor != other.color) {
+      //   gameRef.gameOver();
+      // }
+    } else if (other is StarComponent) {
+      other.showCollectEffect();
+      gameRef.increaseScore();
+      FlameAudio.play('collect_score.wav');
+
+      gameRef.checkForTheNextBatch(other);
     }
   }
 
