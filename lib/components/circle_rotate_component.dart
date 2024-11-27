@@ -17,11 +17,22 @@ class CircleRotateComponent extends PositionComponent
   })  : assert(size!.x == size.y),
         super(anchor: Anchor.center);
 
-  final double thickness, rotateSpeed;
+  double thickness, rotateSpeed;
 
   @override
   void onLoad() {
     super.onLoad();
+
+    if (gameRef.currentScore.value >= 50) {
+      rotateSpeed = 4;
+    }
+    // else {
+    //   final random = math.Random().nextInt(1000);
+    //   bool isEven = random % 2 == 0;
+    //   if (isEven) {
+    //     rotateSpeed = 3;
+    //   }
+    // }
 
     const circle = math.pi * 2;
     final sweep = circle / gameRef.gameColors.length;

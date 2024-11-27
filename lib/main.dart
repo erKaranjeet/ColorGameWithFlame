@@ -41,9 +41,7 @@ class MyAppState extends State<MyApp> {
         children: [
           GameWidget(game: flameGame),
           if (!flameGame.isGamePaused)
-            Positioned(
-            left: 0,
-            child: SafeArea(
+            SafeArea(
               child: IconButton(
                 onPressed: () {
                   setState(() {
@@ -52,11 +50,10 @@ class MyAppState extends State<MyApp> {
                 },
                 icon: const Icon(
                   Icons.pause_circle_outline_rounded,
-                  size: 32.0,
+                  size: 48.0,
                 ),
               ),
             ),
-          ),
           if (!flameGame.isGamePaused)
             Positioned(
             left: 0,
@@ -72,7 +69,7 @@ class MyAppState extends State<MyApp> {
                       textStyle: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
+                        fontSize: 32.0,
                         shadows: [
                           Shadow(
                             color: Colors.black,
@@ -125,6 +122,57 @@ class MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
+            ),
+          ValueListenableBuilder(
+              valueListenable: flameGame.isGameOver,
+              builder: (context, value, child) {
+                return value ? BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 5,
+                    sigmaY: 5,
+                  ),
+                  child: Container(
+                    color: Colors.black45,
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ValueListenableBuilder(
+                            valueListenable: flameGame.currentScore,
+                            builder: (context, value, child) {
+                              return Text(
+                                'GAME OVER!\nScores: $value',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.nunito(
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 48.0,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                flameGame.isGameOver.value = false;
+                                flameGame.initGameComponents();
+                              });
+                            },
+                            icon: const Icon(
+                              Icons.play_circle_outline_rounded,
+                              size: 68.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ) : const SizedBox.shrink();
+              },
             ),
         ],
       ),
