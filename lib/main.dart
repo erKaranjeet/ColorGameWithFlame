@@ -56,8 +56,8 @@ class MyAppState extends State<MyApp> {
             ),
           if (!flameGame.isGamePaused)
             Positioned(
-            left: 0,
-            right: 0,
+            left: 50,
+            right: 50,
             child: SafeArea(
               child: ValueListenableBuilder(
                 valueListenable: flameGame.currentScore,
